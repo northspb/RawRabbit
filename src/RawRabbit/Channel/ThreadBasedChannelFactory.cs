@@ -145,8 +145,16 @@ namespace RawRabbit.Channel
 		{
 			if (_connection == null)
 			{
-				_logger.LogDebug($"Creating a new connection for {_config.Hostnames.Count} hosts.");
-				_connection = _connectionFactory.CreateConnection(_config.Hostnames);
+                if (!string.IsNullOrEmpty(_config.ClientName))
+                {
+                    _logger.LogDebug($"Creating a new connection from client with {_config.ClientName} for {_config.Hostnames.Count} hosts.");
+                    _connection = _connectionFactory.CreateConnection(_config.Hostnames, _config.ClientName);
+                }
+                else
+                {
+                    _logger.LogDebug($"Creating a new connection for {_config.Hostnames.Count} hosts.");
+                    _connection = _connectionFactory.CreateConnection(_config.Hostnames);
+                }
 			}
 			if (_connection.IsOpen)
 			{

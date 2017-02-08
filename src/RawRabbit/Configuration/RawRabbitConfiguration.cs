@@ -78,6 +78,11 @@ namespace RawRabbit.Configuration
 		public List<string> Hostnames { get; set; }
 		public TimeSpan RecoveryInterval { get; set; }
 
+        /// <summary>
+        /// Indicates client name instead of information from Http request
+        /// </summary>
+        public string ClientName { get; set; }
+
 		public RawRabbitConfiguration()
 		{
 			RequestTimeout = TimeSpan.FromSeconds(10);
