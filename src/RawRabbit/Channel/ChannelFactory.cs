@@ -44,7 +44,14 @@ namespace RawRabbit.Channel
 		{
 			try
 			{
-				_connection = _connectionFactory.CreateConnection(_config.Hostnames);
+                if (!string.IsNullOrEmpty(_config.ClientName))
+                {
+                    _connection = _connectionFactory.CreateConnection(_config.Hostnames, _config.ClientName);
+                }
+                else
+                {
+                    _connection = _connectionFactory.CreateConnection(_config.Hostnames);
+                }
 				SetupConnectionRecovery(_connection);
 			}
 			catch (BrokerUnreachableException e)
@@ -286,8 +293,16 @@ namespace RawRabbit.Channel
 		{
 			if (_connection == null)
 			{
-				_logger.LogDebug($"Creating a new connection for {_config.Hostnames.Count} hosts.");
-				_connection = _connectionFactory.CreateConnection(_config.Hostnames);
+                if (!string.IsNullOrEmpty(_config.ClientName))
+                {
+                    _logger.LogDebug($"Creating a new connection for {_config.Hostnames.Count} hosts.");
+                    _connection = _connectionFactory.CreateConnection(_config.Hostnames, _config.ClientName);
+                }
+                else
+                {
+                    _logger.LogDebug($"Creating a new connection for {_config.Hostnames.Count} hosts.");
+                    _connection = _connectionFactory.CreateConnection(_config.Hostnames);
+                }
 			}
 			if (_connection.IsOpen)
 			{
